@@ -6,7 +6,7 @@
             font-weight: bold;
             font-size: 20px;
             font-family: Arial, Helvetica, sans-serif;
-            padding-top: 10px;
+            
             
         }
         .canvaswrapper{
@@ -48,5 +48,13 @@
             }
             
 
+        }
+        .gameover{
+            align-items: center;
+            text-align: center;
+            font-weight: bold;
+            font-size: 15px;
+            font-family: Arial, Helvetica, sans-serif;
+            padding-top: 10px;
         }
 }

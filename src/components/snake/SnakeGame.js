@@ -38,22 +38,45 @@ const SnakeGame = () => {
   const moveSnake = ({ keyCode }) => 
   keyCode >= 37 && keyCode <= 40 && setDir(DIRECTIONS[keyCode]);
   
-  const generateFood = () => {
+  const generateFood = () =>
+  food.map((_a, i) => Math.floor(Math.random() * (CANVAS_SIZE[i] / SCALE)));
 
-  }
+  const checkCollision = (piece, s = snake) => {
+    if(
+      piece[0] * SCALE >= CANVAS_SIZE[0] ||
+      piece[0] < 0 ||
+      piece[1] * SCALE >= CANVAS_SIZE[1] ||
+      piece[1] < 0 
 
-  const checkCollision = () => {
+    )
+      return true;    
 
-  }
-  const checkAppleCollision = () => {
+    for(const segment of s)
+    {
+      if(piece[0] === segment[0] && piece[1] === segment[1]) return true;
+    }
 
-  }
+  return false;
+  };
+
+  const checkFoodCollision = newSnake => {
+    if (newSnake[0][0] === food[0] && newSnake[0][1] === food[1]) {
+      let newFood = generateFood();
+      while (checkCollision(newFood, newSnake)) {
+        newFood = generateFood();
+      }
+      setFood(newFood);
+      return true;
+    }
+    return false;
+  };
   
   const gameLoop = () => {
     const snakeCopy = JSON.parse(JSON.stringify(snake));
     const newSnakeHead = [snakeCopy[0][0] + dir[0], snakeCopy[0][1] + dir[1]];
     snakeCopy.unshift(newSnakeHead);
-    snakeCopy.pop();
+    if(checkCollision(newSnakeHead)) endGame();
+    if (!checkFoodCollision(snakeCopy)) snakeCopy.pop();
     setSnake(snakeCopy);
   }
 
