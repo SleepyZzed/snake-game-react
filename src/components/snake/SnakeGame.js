@@ -19,16 +19,24 @@ const SnakeGame = () => {
   const [speed, setSpeed] = useState(null);
   const [gameOver, setGameover] = useState(false);
 
+
+
   const startGame = () => {
+    setSnake(SNAKE_START);
+    setFood(FOOD_START);
+    setDir([0,-1]);
+    setSpeed(SPEED);
+    setGameover(false);
 
   }
 
   const endGame = () => {
+    setSpeed(null);
+    setGameover(true);
 
   }
-  const moveSnake = () => {
-    
-  }
+  const moveSnake = ({ keyCode }) => 
+  keyCode >= 37 && keyCode <= 40 && setDir(DIRECTIONS[keyCode]);
   
   const generateFood = () => {
 
@@ -42,19 +50,43 @@ const SnakeGame = () => {
   }
   
   const gameLoop = () => {
-
+    const snakeCopy = JSON.parse(JSON.stringify(snake));
+    const newSnakeHead = [snakeCopy[0][0] + dir[0], snakeCopy[0][1] + dir[1]];
+    snakeCopy.unshift(newSnakeHead);
+    snakeCopy.pop();
+    setSnake(snakeCopy);
   }
 
+  
+
   useEffect(() => {
+    const context = canvasRef.current.getContext("2d");
+    context.setTransform(SCALE, 0, 0, SCALE, 0, 0);
+    context.clearRect(0, 0, CANVAS_SIZE[0], CANVAS_SIZE[1]);
+    context.fillStyle ='red';
+    snake.forEach(([x, y]) => context.fillRect(x, y, 1, 1,));
+    context.fillStyle = 'yellow';
+    context.fillRect(food[0], food[1], 1, 1);
 
   }, [snake, food, gameOver])
 
+  useInterval(() => gameLoop(), speed);
+  useEffect(() => {
+    document.addEventListener('keydown', detectKeyDown, true);
+  })
+
+  const detectKeyDown = (e) =>{
+    moveSnake(e);
+  } 
+  
   return (
     <div className='snakegamecontainer'>
       <div className="title">
-      Snake Game
+        <h2>
+          Snake Game
+        </h2>
       </div>
-      <div role='button' tabIndex='0'className="canvaswrapper" onKeyDown={ e=> moveSnake(e)}>
+      <div tabIndex='0'className="canvaswrapper">
         <canvas
          className="canvas"
          ref={canvasRef}
