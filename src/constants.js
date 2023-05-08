@@ -3,7 +3,7 @@ const SNAKE_START = [
   [8, 7],
   [8, 8]
 ];
-const APPLE_START = [8, 3];
+const FOOD_START = [8, 3];
 const SCALE = 40;
 const SPEED = 100;
 const DIRECTIONS = {
@@ -16,7 +16,7 @@ const DIRECTIONS = {
 export {
   CANVAS_SIZE,
   SNAKE_START,
-  APPLE_START,
+  FOOD_START,
   SCALE,
   SPEED,
   DIRECTIONS
