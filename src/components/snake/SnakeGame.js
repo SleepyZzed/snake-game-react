@@ -40,6 +40,7 @@ const SnakeGame = () => {
 
     const [isVisible, setIsVisible] = useState(true);
     const [isVisibleTitle, setIsVisibleTitle] = useState(true);
+    const [isVisibleHelp, setIsVisibleHelp] = useState(true);
 
     const [seconds, setSeconds] = useState(3);
     const timer = (() => {
@@ -123,6 +124,7 @@ const SnakeGame = () => {
     setGameover(false);
     setIsVisible(!isVisible);
     setIsVisibleTitle(!isVisibleTitle);
+    setIsVisibleHelp(!isVisibleHelp);
     setScore(0);
    
     
@@ -138,6 +140,7 @@ const SnakeGame = () => {
     setIsVisible(!isVisible);
     setSeconds(3);
     setIsVisibleTitle(!isVisibleTitle);
+    setIsVisibleHelp(!isVisibleHelp);
     
     
 
@@ -218,9 +221,13 @@ const SnakeGame = () => {
   useInterval(() => gameLoop(), speed);
   useEffect(() => {
     document.addEventListener('keydown', detectKeyDown, true);
+    
   })
 
   const detectKeyDown = (e) =>{
+    if(e.keyCode === 13){
+      startGame();
+    }
     moveSnake(e);
   } 
   
@@ -236,8 +243,9 @@ const SnakeGame = () => {
           Snake Game
         </h2>
         ) : null}
+        <p className="help" style={{ display: isVisibleTitle ? "block" : "none" }}>Press enter or hit the start button to play</p>
       </div>
-      <div tabIndex='0'className="canvaswrapper">
+      <div className="canvaswrapper">
         <canvas
          className="canvas"
          ref={canvasRef}
