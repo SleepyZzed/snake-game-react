@@ -1,5 +1,5 @@
 import SnakeGame from './components/snake/SnakeGame';
-
+import './app.scss';
 
 function App() {
   return (

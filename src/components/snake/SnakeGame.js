@@ -23,6 +23,7 @@ const SnakeGame = () => {
   const [dir, setDir] = useState([0,-1]);
   const [speed, setSpeed] = useState(null);
   const [gameOver, setGameover] = useState(false);
+  const [gamePlaying, setGamePlaying] = useState(false);
   const [score, setScore] = useState(0);
 
     
@@ -41,6 +42,10 @@ const SnakeGame = () => {
     const [isVisible, setIsVisible] = useState(true);
     const [isVisibleTitle, setIsVisibleTitle] = useState(true);
     const [isVisibleHelp, setIsVisibleHelp] = useState(true);
+
+  
+
+
 
     const [seconds, setSeconds] = useState(3);
     const timer = (() => {
@@ -116,7 +121,7 @@ const SnakeGame = () => {
   const startGame = () => {
     
     
-    
+    setGamePlaying(true);
     setSnake(SNAKE_START);
     setFood(FOOD_START);
     setDir([0,-1]);
@@ -133,6 +138,7 @@ const SnakeGame = () => {
   }
 
   const endGame = () => {
+    setGamePlaying(false);
     setSpeed(null);
     setGameover(true);
     pause();
@@ -143,9 +149,12 @@ const SnakeGame = () => {
     setIsVisibleHelp(!isVisibleHelp);
     
     
+    
 
   }
-  const moveSnake = ({ keyCode }) => 
+
+  
+ const moveSnake = ({ keyCode }) => 
   keyCode >= 37 && keyCode <= 40 && setDir(DIRECTIONS[keyCode]);
   
   const generateFood = () =>
@@ -192,6 +201,7 @@ const SnakeGame = () => {
   };
   
   const gameLoop = () => {
+    
     timer();
     if(seconds <= 0){
     play();
@@ -211,9 +221,9 @@ const SnakeGame = () => {
     const context = canvasRef.current.getContext("2d");
     context.setTransform(SCALE, 0, 0, SCALE, 0, 0);
     context.clearRect(0, 0, CANVAS_SIZE[0], CANVAS_SIZE[1]);
-    context.fillStyle ='red';
+    context.fillStyle ='brown';
     snake.forEach(([x, y]) => context.fillRect(x, y, 1, 1,));
-    context.fillStyle = 'yellow';
+    context.fillStyle = 'purple';
     context.fillRect(food[0], food[1], 1, 1);
 
   }, [snake, food, gameOver])
@@ -222,11 +232,14 @@ const SnakeGame = () => {
   useEffect(() => {
     document.addEventListener('keydown', detectKeyDown, true);
     
-  })
+  });
 
   const detectKeyDown = (e) =>{
     if(e.keyCode === 13){
+      if(!gamePlaying)
+      {
       startGame();
+      }
     }
     moveSnake(e);
   } 
