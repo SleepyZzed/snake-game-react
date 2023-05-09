@@ -29,7 +29,7 @@ const SnakeGame = () => {
   const [gameOver, setGameover] = useState(false);
   const [gamePlaying, setGamePlaying] = useState(false);
   const [score, setScore] = useState(0);
-
+  const [performance, setPerformance] = useState(false);
     
     const [playing, setPlaying] = useState(false);
     const [playingCount, setPlayingCount] = useState(false);
@@ -220,7 +220,7 @@ const SnakeGame = () => {
   }
 
   
-
+  
   useEffect(() => {
     var imageObj1 = new Image();
     var imageObj2 = new Image();
@@ -235,17 +235,23 @@ const SnakeGame = () => {
 
     context.setTransform(SCALE, 0, 0, SCALE, 0, 0);
     context.clearRect(0, 0, CANVAS_SIZE[0], CANVAS_SIZE[1]);
-    
+    if(performance){
     context.fillStyle ='yellow';
     const [head, ...tail] = snake;
     context.drawImage(imageObj3, head[0], head[1], 1, 1); 
     snake.slice(1, -1).forEach(([x, y]) => context.drawImage(imageObj2,x, y, 1, 1,));
     const [tailX, tailY] = tail.slice(-1)[0];
     context.drawImage(imageObj4, tailX, tailY, 1, 1);
-    context.drawImage(imageObj1,food[0], food[1], 1, 1);
+    context.drawImage(imageObj1, food[0], food[1], 1, 1);
      // Save the current canvas state
-    //context.fillStyle = 'purple';
-    
+    context.fillStyle = 'purple';
+    }
+    else{
+    context.fillStyle ='brown';
+    snake.forEach(([x, y]) => context.fillRect(x, y, 1, 1,));
+    context.fillStyle='yellow';
+    context.fillRect(food[0], food[1], 1, 1);
+    }
 
   }, [snake, food, gameOver])
 
@@ -254,6 +260,15 @@ const SnakeGame = () => {
     document.addEventListener('keydown', detectKeyDown, true);
     
   });
+
+  const performanceMode = () =>{
+    if(!performance){
+    setPerformance(true);
+    }
+    else{
+      setPerformance(false);
+    }
+  }
 
   const detectKeyDown = (e) =>{
     console.log(e);
@@ -279,7 +294,7 @@ const SnakeGame = () => {
           Snake Game
         </h2>
         ) : null}
-        <p className="help" style={{ display: isVisibleTitle ? "block" : "none" }}>Press enter or hit the start button to play</p>
+        <p className="help" style={{ display: isVisibleTitle ? "block" : "none" }}>Press enter or hit the start button to play, Some browsers may not render graphics properly, please toggle graphics</p>
       </div>
       <div className="canvaswrapper">
         <canvas
@@ -293,6 +308,10 @@ const SnakeGame = () => {
         <button className="startgame" onClick={startGame} style={{ display: isVisible ? "block" : "none" }}>
         Start Game
         </button>
+        <button className="performance" onClick={performanceMode} style={{ display: isVisible ? "block" : "none" }}>
+        Graphics
+        </button>
+        
 
       </div>
 
