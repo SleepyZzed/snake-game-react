@@ -13,6 +13,10 @@ import {
 import sound from '../../assets/sounds/bg.mp3';
 import countdownsound from '../../assets/sounds/countdown.wav';
 import collectionSound from '../../assets/sounds/collect.mp3';
+import imgob1 from '../../assets/images/food.png';
+import imgob2 from '../../assets/images/body.png';
+import imgob3 from '../../assets/images/head.png';
+import imgob4 from '../../assets/images/tail.png';
 
 const SnakeGame = () => {
   
@@ -152,11 +156,11 @@ const SnakeGame = () => {
     
 
   }
-
+  
   
  const moveSnake = ({ keyCode }) => 
   keyCode >= 37 && keyCode <= 40 && setDir(DIRECTIONS[keyCode]);
-  
+
   const generateFood = () =>
   food.map((_a, i) => Math.floor(Math.random() * (CANVAS_SIZE[i] / SCALE)));
   
@@ -218,13 +222,30 @@ const SnakeGame = () => {
   
 
   useEffect(() => {
+    var imageObj1 = new Image();
+    var imageObj2 = new Image();
+    var imageObj3 = new Image();
+    var imageObj4 = new Image();
+    imageObj1.src = imgob1;
+    imageObj2.src = imgob2;
+    imageObj3.src = imgob3;
+    imageObj4.src = imgob4;
     const context = canvasRef.current.getContext("2d");
+    
+
     context.setTransform(SCALE, 0, 0, SCALE, 0, 0);
     context.clearRect(0, 0, CANVAS_SIZE[0], CANVAS_SIZE[1]);
-    context.fillStyle ='brown';
-    snake.forEach(([x, y]) => context.fillRect(x, y, 1, 1,));
-    context.fillStyle = 'purple';
-    context.fillRect(food[0], food[1], 1, 1);
+    
+    context.fillStyle ='yellow';
+    const [head, ...tail] = snake;
+    context.drawImage(imageObj3, head[0], head[1], 1, 1); 
+    snake.slice(1, -1).forEach(([x, y]) => context.drawImage(imageObj2,x, y, 1, 1,));
+    const [tailX, tailY] = tail.slice(-1)[0];
+    context.drawImage(imageObj4, tailX, tailY, 1, 1);
+    context.drawImage(imageObj1,food[0], food[1], 1, 1);
+     // Save the current canvas state
+    //context.fillStyle = 'purple';
+    
 
   }, [snake, food, gameOver])
 
@@ -235,12 +256,14 @@ const SnakeGame = () => {
   });
 
   const detectKeyDown = (e) =>{
+    console.log(e);
     if(e.keyCode === 13){
       if(!gamePlaying)
       {
       startGame();
       }
     }
+    
     moveSnake(e);
   } 
   
