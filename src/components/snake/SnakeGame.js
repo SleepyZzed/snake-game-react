@@ -30,6 +30,7 @@ const SnakeGame = () => {
   const [gamePlaying, setGamePlaying] = useState(false);
   const [score, setScore] = useState(0);
   const [performance, setPerformance] = useState(false);
+  const [pButtonText, setPButtonText] = useState('Enable Graphics');
     
     const [playing, setPlaying] = useState(false);
     const [playingCount, setPlayingCount] = useState(false);
@@ -264,9 +265,11 @@ const SnakeGame = () => {
   const performanceMode = () =>{
     if(!performance){
     setPerformance(true);
+    setPButtonText('Disable Graphics');
     }
     else{
       setPerformance(false);
+      setPButtonText('Enable Graphics');
     }
   }
 
@@ -309,7 +312,7 @@ const SnakeGame = () => {
         Start Game
         </button>
         <button className="performance" onClick={performanceMode} style={{ display: isVisible ? "block" : "none" }}>
-        Graphics
+        {pButtonText}
         </button>
         
 
