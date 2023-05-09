@@ -57,11 +57,11 @@ const SnakeGame = () => {
       if (seconds > 0) {
         setTimeout(() => setSeconds(seconds - 1), 1000);
         playCountDown();
-        console.log({seconds});
+     
       } else {
        
         pauseCountDown();
-        console.log({seconds});
+        
         
       }
     });
@@ -87,7 +87,7 @@ const SnakeGame = () => {
      
       if(playingCollect)
       {
-        
+       
       }
       setPlayingCollect(true);
       audioRefCollect.current.currentTime = 0;
@@ -190,13 +190,13 @@ const SnakeGame = () => {
     if (newSnake[0][0] === food[0] && newSnake[0][1] === food[1]) {
       let newFood = generateFood();
       
-        setSpeed(speed -3);
-        playCollect();
-        setScore(score +1);
+        
       while (checkCollision(newFood, newSnake)) {
         newFood = generateFood();
         
       }
+      playCollect();
+      setScore(score +1);
       setFood(newFood);
       
       
@@ -254,7 +254,7 @@ const SnakeGame = () => {
     context.fillRect(food[0], food[1], 1, 1);
     }
 
-  }, [snake, food, gameOver])
+  }, [snake, food, gameOver, performance])
 
   useInterval(() => gameLoop(), speed);
   useEffect(() => {
@@ -274,7 +274,7 @@ const SnakeGame = () => {
   }
 
   const detectKeyDown = (e) =>{
-    console.log(e);
+    
     if(e.keyCode === 13){
       if(!gamePlaying)
       {
